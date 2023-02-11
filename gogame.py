@@ -61,7 +61,7 @@ class Board(go.Board):
         self.cube = self.draw()
 
     def draw(self):
-        cube = Entity(parent=rotation_resetter, model='cube', scale=(10, 1, 10), collider='box', texture='maze',
+        cube = Entity(parent=rotation_resetter, model=BOARDOBJ, scale=(10, 1, 10), collider='box', texture=BOARDTEXTURE,
                       on_click=action)
         rotation_resetter.rotation_x -= 40
         return cube
