@@ -4,9 +4,17 @@ from ursina import *
 app = Ursina()
 
 
+
+BOARDOBJ = "board.obj"
+BOARDTEXTURE = "boardtexture.png"
+
 whitepieces = []
 blackpieces = []
 
+TOPRIGHT = (-0.5,0.5)
+BOTTOMLEFT = (-0.5,0.5)
+
+#need to remove this
 xrange = (-0.5,0.5)
 yrange = (-0.5,0.5)
 
@@ -27,11 +35,17 @@ class Stone(go.Stone):
     def __init__(self,board,point,color):
         super(Stone,self).__init__(board,point,color)
         self.coords = (boardxrange[0]+self.point[0]*40/820,boardyrange[0]+self.point[1]*40/820)
-        self.draw()
         self.item = None
+        self.x = self.coords[0]
+        self.y = 0.5
+        self.z = self.coords[1]
+        # print(self.x,self.z,self.coords)
+        self.draw()
 
     def draw(self):
-        piece = Entity(parent=cube,model="cube",position=(x,y+0.1,z),scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color)
+        piece = Entity(parent=board.cube,model="cube",
+                       position=(self.x,self.y+0.1,self.z),
+                       scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[self.color])
         self.item = piece
         
     def remove(self):
@@ -42,12 +56,16 @@ class Stone(go.Stone):
 class Board(go.Board):
     def __init__(self):
         super(Board, self).__init__()
+        self.bottomleft = BOTTOMLEFT
+        self.topright = TOPRIGHT
+        self.cube = self.draw()
 
     def draw(self):
         cube = Entity(parent=rotation_resetter, model='cube', scale=(10, 1, 10), collider='box', texture='maze',
                       on_click=action)
         rotation_resetter.rotation_x -= 40
-        cube.rotation = cube.world_rotation
+        return cube
+
 
 
 def nearestJunction(x,y):
@@ -56,10 +74,9 @@ def nearestJunction(x,y):
     n1 = round(x/boxsize)
     n2 = round(y/boxsize)
 
-    x = n1*boxsize+boardxrange[0]
-    y = n2*boxsize+boardyrange[0]
+
     
-    return x,y,n1,n2
+    return n1,n2
 
 def action():
     
@@ -68,16 +85,19 @@ def action():
     if(mouse.point[1]==0.5):
         # clicked on the correct face of board
         x,y,z = mouse.point
-        if x<boardxrange[0] or y<boardyrange[0]:
+        print(x,y,z)
+        if x<boardxrange[0] or z<boardyrange[0]:
             return
 
         # clicked inside game areaa
-        x,z,n1,n2 = nearestJunction(x,z)
+        n1,n2 = nearestJunction(x,z)
+        print("hey:",n1,n2)
         stone = board.search(point=(n1,n2))
         if stone:
             # There's already a stone at that postion
             return
         added_stone = Stone(board,(n1,n2),board.turn())
+        board.update_liberties(added_stone)
 
 
         
@@ -89,18 +109,20 @@ def action():
 
 
 
-        COLOR = board.turn()
-        piece = Entity(parent=cube,model="cube",position=(x,y+0.1,z),scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[COLOR])
+        # COLOR = board.turn()
+        # piece = Entity(parent=cube,model="cube",position=(x,y+0.1,z),scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[COLOR])
 
 
 
-
+def input(key):
+    if key == "q":
+        quit()
 
 def update():
     rotation_resetter.rotation_x += 100 * (held_keys['a'] - held_keys['d']) * time.dt
     rotation_resetter.rotation_z += 100 * (held_keys['w'] - held_keys['s']) * time.dt
 
-
+    board.cube.rotation = board.cube.world_rotation
     rotation_resetter.rotation = (0,0,0)
 
 
