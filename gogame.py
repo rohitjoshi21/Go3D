@@ -8,6 +8,11 @@ app = Ursina()
 BOARDOBJ = "board.obj"
 BOARDTEXTURE = "boardtexture.png"
 
+PIECEOBJ = "piece.obj"
+WHITETEXTURE = "white.png"
+BLACKTEXTURE = "black.png"
+
+
 whitepieces = []
 blackpieces = []
 
@@ -29,7 +34,7 @@ boxsize = 40*xlen/820
 
 turn = 0
 
-color2texture = {go.BLACK:"black",go.WHITE:"white"}
+color2texture = {go.BLACK:BLACKTEXTURE,go.WHITE:WHITETEXTURE}
 
 class Stone(go.Stone):
     def __init__(self,board,point,color):
@@ -43,9 +48,13 @@ class Stone(go.Stone):
         self.draw()
 
     def draw(self):
-        piece = Entity(parent=board.cube,model="cube",
+##        piece = Entity(parent=board.cube,model="cube",
+##                       position=(self.x,self.y+0.1,self.z),
+##                       scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[self.color])
+        piece = Entity(parent=board.cube,model=PIECEOBJ,
                        position=(self.x,self.y+0.1,self.z),
-                       scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[self.color])
+                       scale=(0.1,0.1,0.1),rotation=(90,0,0),double_sided=True,texture=BLACKTEXTURE)
+        piece.rotation_x += 30
         self.item = piece
         
     def remove(self):
