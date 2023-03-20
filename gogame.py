@@ -49,13 +49,9 @@ class Stone(go.Stone):
         self.draw()
 
     def draw(self):
-##        piece = Entity(parent=board.cube,model="cube",
-##                       position=(self.x,self.y+0.1,self.z),
-##                       scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[self.color])
-        piece = Entity(parent=board.cube,model=PIECEOBJ,
+        piece = Entity(parent=board.cube,model="cube",
                        position=(self.x,self.y+0.1,self.z),
-                       scale=(0.1,0.1,0.1),rotation=(90,0,0),double_sided=True,texture=BLACKTEXTURE)
-        piece.rotation_x += 30
+                       scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[self.color])
         self.item = piece
         
     def remove(self):
