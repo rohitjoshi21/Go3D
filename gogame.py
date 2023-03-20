@@ -1,5 +1,6 @@
 import go 
 from ursina import *
+from ursina.shaders import lit_with_shadows_shader
 
 app = Ursina()
 
@@ -62,7 +63,7 @@ class Board(go.Board):
 
     def draw(self):
         cube = Entity(parent=rotation_resetter, model=BOARDOBJ, scale=(10, 1, 10), collider='box', texture=BOARDTEXTURE,
-                      on_click=action)
+                      on_click=action,shader=lit_with_shadows_shader)
         rotation_resetter.rotation_x -= 40
         return cube
 
@@ -100,18 +101,6 @@ def action():
         board.update_liberties(added_stone)
 
 
-        
-        
-##        piece = Entity(parent=cube,model="go.obj",position=(mouse.point[0],mouse.point[1]+0.1,mouse.point[2]),scale=(0.004,0.004,0.05),rotation=(90,0,0),texture="texture1.png")
-        
-##        piece = Entity(parent=cube,model=Cylinder(resolution=14,direction=(0,0,1)),position=(mouse.point[0],mouse.point[1]+0.1,mouse.point[2]),scale=(0.04,0.04,0.4),rotation=(90,0,0),texture="texture1.png")
-
-
-
-
-        # COLOR = board.turn()
-        # piece = Entity(parent=cube,model="cube",position=(x,y+0.1,z),scale=(0.04,0.04,0.1),rotation=(90,0,0),texture=color2texture[COLOR])
-
 
 
 def input(key):
@@ -128,9 +117,14 @@ def update():
 
 
 if __name__ == "__main__":
+    # window.title = 'My Game'
+
     rotation_resetter = Entity()
     board = Board()
     EditorCamera()
+    pivot = Entity()
+    DirectionalLight(parent=pivot, x=2,y=6, z=1, shadows=True)
+
     app.run()
 
 
