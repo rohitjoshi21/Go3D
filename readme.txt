@@ -1,6 +1,9 @@
-You must have installed venv in your machine.
+Install requirements with:
 
-Open Terminal
+$ pip3 install -r requirements.txt
 
-$ source env/bin/activate
-$ python3 gogame.py 
+Run the game with:
+
+$ python3 gogame.py
+
+
