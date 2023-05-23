@@ -5,13 +5,7 @@
 
 This library offers a variety of Go related classes and methods.
 
-There is a companion module called 'goban' which serves as a front-end
-for this library, forming a fully working go board together.
-
 """
-
-__author__ = "Aku Kotkavuo <aku@hibana.net>"
-__version__ = "0.1"
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

@@ -91,13 +91,13 @@ def action():
     if(mouse.point[1]==0.5):
         # clicked on the correct face of board
         x,y,z = mouse.point
-        print(x,y,z)
+        # print(x,y,z)
         if x<boardxrange[0] or z<boardyrange[0]:
             return
 
         # clicked inside game areaa
         n1,n2 = nearestJunction(x,z)
-        print("hey:",n1,n2)
+        # print("hey:",n1,n2)
         stone = board.search(point=(n1,n2))
         if stone:
             # There's already a stone at that postion
